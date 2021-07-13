@@ -76,6 +76,11 @@ python3 --version
 # Python 3.8.2
 ```
 
+Install libpq-dev and libjpeg-dev to build python modules.
+```sh
+apt install libpq-dev libjpeg-dev
+```
+
 ```sh
 cd backend
 python3 -m venv .venv
@@ -90,7 +95,7 @@ pip install -r requirements/local.txt
 # 1) Install PostgresSQL and use the solution at https://stackoverflow.com/a/58440598/1262198
 
 # Need to have Docker and Docker Compose installed
-# Start PostgreSQL and other services via Docker Compose
+# Start PostgreSQL via Docker Compose (not required if using sqlite)
 docker-compose -f services.yml up --d
 
 python manage.py migrate
@@ -102,10 +107,33 @@ python manage.py runserver
 - API root available at `http://localhost:8000/api/`
 - Admin available at `http://localhost:8000/backdoor/`
 
+#### A note on databases
+
+By default Postgresql is used as the database. To try with sqlite replace
+`DATABASES` in `config/settings/production.py` and `config/settings/local.py`
+with the value from `config/settings/base.py`.
+
+### ALLOWED_HOSTS
+
+For testing anywhere but localhost allowed hosts needs to be updated.  Adjust
+`config/settings/local.py` to include an `ALLOWED_HOSTS` line similar to the
+one below but with your systems hostname or IP instead of `192.168.0.141`.
+```
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.0.141']
+```
+
 ### React
 
 - [Node.js](https://nodejs.org) v12 or greater
 - [Yarn](https://yarnpkg.com/) v1 or greater
+
+Installing packages for frontend
+```sh
+sudo apt install nodejs yarnpkg
+
+```
+
+confirm versions:
 
 ```sh
 node --version
